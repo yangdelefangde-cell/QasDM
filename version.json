@@ -1,5 +1,13 @@
 {
-  "version": "V46",
-  "备注": "当前版本V46",
-  "downloadUrl": ""
+  "version": "51-3",
+  "channel": "test",
+  "notes": "安卓测试版；修复检查更新；角色独立上下文与日记续答。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-51-3-1/QasDM_v51-3.html",
+  "android": {
+    "versionCode": 510301,
+    "versionName": "51.3-test.1",
+    "minSdk": 26,
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-51-3-1/QasDM-51.3-test.1.apk"
+  },
+  "releaseTag": "android-test-51-3-1"
 }
