@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
             }
             @Override public void onPermissionRequest(PermissionRequest request) {
                 runOnUiThread(() -> {
-                    if (!ORIGIN.equals(request.getOrigin().toString()) || !java.util.Arrays.asList(request.getResources()).contains(PermissionRequest.RESOURCE_AUDIO_CAPTURE)) {
+                    if (!trustedOrigin(request.getOrigin()) || !java.util.Arrays.asList(request.getResources()).contains(PermissionRequest.RESOURCE_AUDIO_CAPTURE)) {
                         request.deny(); return;
                     }
                     if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
             WebViewCompat.addWebMessageListener(web, "QasNative", Collections.singleton(ORIGIN),
                 (view, message, sourceOrigin, isMainFrame, reply) -> {
-                    if (!isMainFrame || !ORIGIN.equals(sourceOrigin.toString())) return;
+                    if (!isMainFrame || !trustedOrigin(sourceOrigin)) return;
                     try { handleMessage(new JSONObject(message.getData()), reply); }
                     catch (Exception e) { toast("本机操作失败：" + e.getMessage()); }
                 });
@@ -209,6 +209,9 @@ public class MainActivity extends Activity {
             if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) microphoneRequest.grant(new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE});
             else microphoneRequest.deny(); microphoneRequest = null;
         }
+    }
+    private boolean trustedOrigin(Uri uri) {
+        return "https".equals(uri.getScheme()) && "appassets.androidplatform.net".equals(uri.getHost()) && (uri.getPort() == -1 || uri.getPort() == 443);
     }
     private void openExternal(Uri uri) {
         String scheme = uri.getScheme();
