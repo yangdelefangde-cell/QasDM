@@ -32,6 +32,10 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
       - name: Build APK and run lint
         run: gradle --no-daemon :app:assembleDebug :app:lintDebug
+      - name: Verify APK signature and bundled page
+        run: |
+          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose app/build/outputs/apk/debug/app-debug.apk
+          unzip -p app/build/outputs/apk/debug/app-debug.apk assets/www/index.html | cmp index.html -
       - name: Prepare downloads
         run: |
           mkdir dist
