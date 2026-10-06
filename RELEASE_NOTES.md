@@ -1,4 +1,4 @@
-QasDM v52 / Android 52.0-test.1
+QasDM v52 / Android 52.0-test.2
 
 - Browser history stores browsing time separately from refresh time; roles can query their own records.
 - Independent idle diary trigger, action-description permission instructions, read state while in current DM settings.

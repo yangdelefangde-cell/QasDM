@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
         try {
             switch (m.getString("action")) {
                 case "settings":
-                    JSONObject settings=new JSONObject();settings.put("id",id);settings.put("background",getSharedPreferences("qas-native",0).getBoolean("background",false));reply.postMessage(settings.toString());break;
+                    JSONObject settings=new JSONObject();settings.put("id",id);settings.put("background",getSharedPreferences("qas-native",0).getBoolean("background",false));if(getSharedPreferences("qas-native",0).getBoolean("background",false))startForegroundService(new Intent(this,QasService.class).setAction("roles").putExtra("enabled",true));reply.postMessage(settings.toString());break;
                 case "notificationPermission":
                     if(Build.VERSION.SDK_INT>=33&&checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED)requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},53);
                     else if(!getSystemService(NotificationManager.class).areNotificationsEnabled())startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE,getPackageName()));
@@ -217,7 +217,7 @@ public class MainActivity extends Activity {
         nm.notify((cid+tid).hashCode(),b.build());
     }
     @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);pendingConversation=intent.getStringExtra("conversationId");pendingThread=intent.getStringExtra("threadId");deliverNotification();}
-    private void deliverNotification(){if(pendingConversation==null||pendingConversation.isEmpty())return;String cid=pendingConversation,tid=pendingThread==null?"":pendingThread;pendingConversation="";emit("window.qasOpenNotification52&&window.qasOpenNotification52("+JSONObject.quote(cid)+","+JSONObject.quote(tid)+")");}
+    private void deliverNotification(){if(pendingConversation==null||pendingConversation.isEmpty())return;String cid=pendingConversation,tid=pendingThread==null?"":pendingThread;pendingConversation="";emit("if(window.qasOpenNotification52){window.qasOpenNotification52("+JSONObject.quote(cid)+","+JSONObject.quote(tid)+")}else{window.qasPendingNotification52=["+JSONObject.quote(cid)+","+JSONObject.quote(tid)+"]}");}
     private void ack(JavaScriptReplyProxy reply, int id, String error) {
         try { JSONObject value = new JSONObject(); value.put("id", id); if (error != null) value.put("error",error); reply.postMessage(value.toString()); }
         catch (Exception ignored) { }
