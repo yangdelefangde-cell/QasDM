@@ -28,6 +28,11 @@ jobs:
           gradle-version: '8.9'
       - name: Validate version and update logic
         run: node scripts/test-update.cjs
+      - name: Verify UI behavior
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+          node scripts/test-ui.cjs
       - name: Install Android SDK
         run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
       - name: Build APK and run lint

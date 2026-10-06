@@ -1,13 +1,13 @@
 {
-  "version": "51-3",
+  "version": "52",
   "channel": "test",
-  "notes": "安卓测试版；修复检查更新；角色独立上下文与日记续答。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-51-3-2/QasDM_v51-3.html",
+  "notes": "角色记录、短信多号码、返回层级与动画；安卓通知和媒体控制；插件工作流。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-1/QasDM_v52.html",
   "android": {
-    "versionCode": 510302,
-    "versionName": "51.3-test.2",
+    "versionCode": 520001,
+    "versionName": "52.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-51-3-2/QasDM-51.3-test.2.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-1/QasDM-52.0-test.1.apk"
   },
-  "releaseTag": "android-test-51-3-2"
+  "releaseTag": "android-test-52-1"
 }

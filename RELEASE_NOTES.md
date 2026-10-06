@@ -1,9 +1,13 @@
-基于 QasDM v51-3 的安卓测试版（Android 8.0 及以上）。
+QasDM v52 / Android 52.0-test.1
 
-安装后打开应用，填写自己的模型 API。原浏览器数据请先导出备份，再在应用内导入。更新测试 APK 可覆盖安装并保留数据；卸载或清除应用数据会删除本机记录。
+- Browser history stores browsing time separately from refresh time; roles can query their own records.
+- Independent idle diary trigger, action-description permission instructions, read state while in current DM settings.
+- Voice bubble height matches single-line messages. Multiple unknown SMS identities can be added and restored independently.
+- Internal action input dialog, navigation history for profiles, archives, music and plugin screens; double-back exit confirmation.
+- Lightweight interface transitions and reduced-motion option.
+- Declarative plugin workflows: user editor, role creation, inputs, model steps, conditions, messages, plugin opening, waits, pause/cancel and status.
+- Android role-avatar notifications and deep links; skipped notification permission produces no role notifications.
+- Native music playback with media notification, lock-screen controls and audio focus. Room operations are aggregated and passed to the role.
+- Optional user-enabled foreground background runtime and battery-settings guidance. Runs while the app process survives; Android force-stop/OS termination stops role tasks. No cloud push or reboot startup is provided. Background service has a visible stop control.
 
-修复旧备份和开发者日志的安卓导出路径。现有 JSON 备份不包含图片和音频，跨浏览器/应用迁移时需重新添加这些媒体。
-
-包含文件选择、备份导入/导出、复制、麦克风授权、外部链接和独立本机存储。检查更新按安卓 versionCode 比较，网页按 QasDM 版本号比较。
-
-这是测试签名包，签名仅用于测试。未经过真实 OPPO/平板设备兼容性测试；后台主动消息仍受 Android 暂停 WebView 的限制。没有增加后台常驻服务。
+Test build, Android 8+. Keep a backup before updating. Actual device background behavior depends on the system; this release is not a guarantee of perpetual background execution.
