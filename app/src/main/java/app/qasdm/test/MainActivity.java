@@ -93,8 +93,8 @@ public class MainActivity extends Activity {
                 String type = types.length == 1 && types[0].contains("/") ? types[0] : "*/*";
                 pick.setType(type);
                 pick.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, params.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE);
-                try { startActivityForResult(pick, PICK_FILE); }
-                catch (Exception e) { fileCallback.onReceiveValue(null); fileCallback = null; toast("无法打开文件选择器"); }
+                Runnable documents=()->{try{startActivityForResult(pick,PICK_FILE);}catch(Exception e){if(fileCallback!=null)fileCallback.onReceiveValue(null);fileCallback=null;toast("无法打开文件选择器");}};
+                if(type.startsWith("image/")){new android.app.AlertDialog.Builder(MainActivity.this).setTitle("选择图片来源").setItems(new String[]{"系统相册","系统文件管理"},(dialog,which)->{if(which==1){documents.run();return;}Intent photo=new Intent(Intent.ACTION_GET_CONTENT).setType("image/*").addCategory(Intent.CATEGORY_OPENABLE);photo.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,params.getMode()==FileChooserParams.MODE_OPEN_MULTIPLE);try{startActivityForResult(Intent.createChooser(photo,"选择图片"),PICK_FILE);}catch(Exception e){documents.run();}}).setOnCancelListener(dialog->{if(fileCallback!=null)fileCallback.onReceiveValue(null);fileCallback=null;}).show();}else documents.run();
                 return true;
             }
             @Override public void onPermissionRequest(PermissionRequest request) {
@@ -213,7 +213,7 @@ public class MainActivity extends Activity {
         Bitmap avatar=decodeImage(m.optString("avatar"));
         
         Notification.Builder b=new Notification.Builder(this,m.optBoolean("silent",true)?"qas-silent":"qas-messages").setSmallIcon(R.drawable.ic_qasdm).setContentTitle(name).setContentText(m.optString("text")).setContentIntent(target).setAutoCancel(true).setLargeIcon(avatar);
-        if(Build.VERSION.SDK_INT>=28){android.app.Person.Builder person=new android.app.Person.Builder().setName(name).setKey(cid);if(avatar!=null)person.setIcon(android.graphics.drawable.Icon.createWithBitmap(avatar));b.setStyle(new Notification.MessagingStyle(new android.app.Person.Builder().setName("我").build()).addMessage(m.optString("text"),System.currentTimeMillis(),person.build()));}
+
         nm.notify((cid+tid).hashCode(),b.build());
     }
     @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);pendingConversation=intent.getStringExtra("conversationId");pendingThread=intent.getStringExtra("threadId");deliverNotification();}

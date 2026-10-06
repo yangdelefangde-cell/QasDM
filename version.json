@@ -1,13 +1,13 @@
 {
-  "version": "52",
+  "version": "52-1",
   "channel": "test",
-  "notes": "角色记录、短信多号码、返回层级与动画；安卓通知和媒体控制；插件工作流。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-2/QasDM_v52.html",
+  "notes": "页面与返回历史修复、彻底清除工具记忆、通知单头像、音乐查询权限、私信与多选动画、工作流编辑和系统文件选择。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-1-fix/QasDM_v52-1.html",
   "android": {
-    "versionCode": 520002,
-    "versionName": "52.0-test.2",
+    "versionCode": 520003,
+    "versionName": "52.1-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-2/QasDM-52.0-test.2.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-52-1-fix/QasDM-52.1-test.1.apk"
   },
-  "releaseTag": "android-test-52-2"
+  "releaseTag": "android-test-52-1-fix"
 }
