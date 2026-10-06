@@ -2049,6 +2049,7 @@ for(const t of ['inspectMusicRoom','listMusicTracks']){toolTypes11.add(t);readOn
 for(const [key,label,defaultOn] of [['inspectMusicRoom','允许角色查看用户正在听的音乐（默认关闭）',false],['listMusicTracks','允许角色查看音乐房间歌单（默认开启）',true]]){const field=uiNode('label','field'),input=uiNode('input');input.type='checkbox';field.append(input,document.createTextNode(label));$('#toolSet').append(field);const sync=()=>input.checked=(draft||cfg)[key]??defaultOn;$('#settingsShade').addEventListener('transitionend',sync);const settings=beginSettings;beginSettings=function(){settings();sync()};input.onchange=()=>{cfg[key]=input.checked;if(draft)draft[key]=input.checked;active().cfg[key]=input.checked;void persist()}}
 function animateChat53(direction){if(state.shared.reduceMotion52)return;for(const el of [$('#scroll'),$('#conversationList')])if(getComputedStyle(el).display!=='none')el.animate([{opacity:.45,transform:'translateX('+direction*16+'px)'},{opacity:1,transform:'none'}],{duration:180,easing:'ease-out'})}
 const open53=openConversation;openConversation=function(id){open53(id);animateChat53(1)};const leave53=leaveChat;leaveChat=function(){leave53();animateChat53(-1)};
+const back53=back52;back52=function(){const before=screen;const result=back53();if(result&&before!==screen)animateChat53(screen==='chat'?1:-1);return result};window.qasAndroidBack=back52;
 const list53=drawPluginList;drawPluginList=function(){list53();const root=$('#pluginBody');if(root)root.prepend(uiButton('制作／编辑工作流',openWorkflows52))};
 
 
