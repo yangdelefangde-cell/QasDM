@@ -39,7 +39,9 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug :app:lintDebug
       - name: Verify APK signature and bundled page
         run: |
-          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose --print-certs app/build/outputs/apk/debug/app-debug.apk
+          CERT=$("$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+          test "$CERT" = "e9b29082c2f78809deb9e9f47ff3b93c976f059c6cdba54134ac0cf72f209bff"
           unzip -p app/build/outputs/apk/debug/app-debug.apk assets/www/index.html | cmp index.html -
       - name: Prepare downloads
         run: |

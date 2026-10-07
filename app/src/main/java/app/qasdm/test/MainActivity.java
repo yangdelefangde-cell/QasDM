@@ -159,6 +159,10 @@ public class MainActivity extends Activity {
                     try{startActivity(new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS));}catch(Exception e){startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+getPackageName())));}ack(reply,id,null);break;
                 case "background":
                     startForegroundService(new Intent(this,QasService.class).setAction("roles").putExtra("enabled",m.optBoolean("enabled")));ack(reply,id,null);break;
+                case "searchRequest":
+                    final String searchUrl=m.getString("url"),searchKey=m.getString("key"),searchBody=m.getString("body");
+                    if(!searchUrl.startsWith("https://")||searchBody.length()>20000)throw new IOException("搜索请求无效");
+                    files.execute(()->{try{java.net.HttpURLConnection connection=(java.net.HttpURLConnection)new java.net.URL(searchUrl).openConnection();connection.setConnectTimeout(8000);connection.setReadTimeout(20000);connection.setInstanceFollowRedirects(false);connection.setRequestMethod("POST");connection.setDoOutput(true);connection.setRequestProperty("Content-Type","application/json");connection.setRequestProperty("Authorization","Bearer "+searchKey);try(OutputStream output=connection.getOutputStream()){output.write(searchBody.getBytes(java.nio.charset.StandardCharsets.UTF_8));}int status=connection.getResponseCode();if(status<200||status>=300)throw new IOException("搜索服务 HTTP "+status);ByteArrayOutputStream output=new ByteArrayOutputStream();try(InputStream input=connection.getInputStream()){byte[] buffer=new byte[8192];int n;while((n=input.read(buffer))!=-1){if(output.size()+n>2097152)throw new IOException("搜索结果过大");output.write(buffer,0,n);}}connection.disconnect();JSONObject result=new JSONObject();result.put("id",id);result.put("body",output.toString("UTF-8"));runOnUiThread(()->reply.postMessage(result.toString()));}catch(Exception error){runOnUiThread(()->ack(reply,id,error.getMessage()));}});break;
                 case "notify":
                     notifyRole(m);ack(reply,id,null);break;
                 case "musicStart":
@@ -205,14 +209,16 @@ public class MainActivity extends Activity {
         } catch (Exception e) { ack(reply, id, e.getMessage()); }
     }
 
-    private void notifyRole(JSONObject m) {
-        NotificationManager nm=getSystemService(NotificationManager.class);if(!nm.areNotificationsEnabled())return;
+    private void notifyRole(JSONObject m) throws IOException {
+        NotificationManager nm=getSystemService(NotificationManager.class);if(!nm.areNotificationsEnabled())throw new IOException("系统通知未开启");
+        String channel=m.optBoolean("silent",true)?"qas-silent":"qas-messages";
+        NotificationChannel settings=nm.getNotificationChannel(channel);if(settings!=null&&settings.getImportance()==NotificationManager.IMPORTANCE_NONE)throw new IOException("角色消息通知渠道已关闭");
         String cid=m.optString("conversationId"),tid=m.optString("threadId"),name=m.optString("name","角色");
         Intent intent=new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("conversationId",cid).putExtra("threadId",tid);
         PendingIntent target=PendingIntent.getActivity(this,(cid+tid).hashCode(),intent,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
         Bitmap avatar=decodeImage(m.optString("avatar"));
         
-        Notification.Builder b=new Notification.Builder(this,m.optBoolean("silent",true)?"qas-silent":"qas-messages").setSmallIcon(R.drawable.ic_qasdm).setContentTitle(name).setContentText(m.optString("text")).setContentIntent(target).setAutoCancel(true).setLargeIcon(avatar);
+        Notification.Builder b=new Notification.Builder(this,channel).setSmallIcon(R.drawable.ic_qasdm).setContentTitle(name).setContentText(m.optString("text")).setContentIntent(target).setAutoCancel(true).setLargeIcon(avatar);
 
         nm.notify((cid+tid).hashCode(),b.build());
     }
@@ -279,6 +285,8 @@ public class MainActivity extends Activity {
                 .setNegativeButton("取消",null).setPositiveButton("退出",(d,w)->{stopService(new Intent(this,QasService.class));finish();}).show();}
         });
     }
+    @Override protected void onPause(){super.onPause();emit("window.qasNativeBackground53=true");}
+    @Override protected void onResume(){super.onResume();emit("window.qasNativeBackground53=false");}
     @Override protected void onDestroy() {
         if (fileCallback != null) fileCallback.onReceiveValue(null);
         if (microphoneRequest != null) microphoneRequest.deny();

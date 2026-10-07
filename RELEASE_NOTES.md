@@ -1,11 +1,19 @@
-QasDM v52-1 / Android 52.1-test.1
+# QasDM 53.0-test.1
 
-- Fix root tab visibility, footer placement and back navigation replaying closed pages.
-- Clear saved tool evidence, interruption/resume state and task drafts; abort active role runs and discard old model replies after memory reset. Diaries remain preserved as described by the existing clear dialog.
-- Single role-avatar notification; rasterize avatars for Android and provide a silhouette fallback.
-- Separate role permissions: inspect currently playing music room (off by default), inspect existing music playlist (on by default). Current-room tool exposes song and optional second listener name only while playback is active.
-- Smooth private-chat transitions and individual selected-message lift with reduced-motion support.
-- Workflow editor available directly from plugins; automatic step IDs and dropdown branches/plugin choices, no user code required.
-- Image upload source chooser: system gallery or system document picker. Other files use the system document picker.
+- 一个角色可保留多个会话，支持命名、置顶、删除与独立／共享长期记忆。原有对话自动成为默认会话，旧记录保留。
+- 「我的」新增公共设置和用户档案，保留高级选项的说明。日记采用更轻的手账排版。
+- 作品评论支持圆形头像、回复、点赞、图片、提及角色及作者标记；角色可读评论、回复和点赞。
+- 新增默认关闭的角色联网搜索权限；公共设置可配置 Tavily 兼容服务，APK 使用原生网络请求。
+- 启动自动检查更新，有新版本时首页显示更新内容；连接失败可重试或打开发布页面。
+- 通知头像缓存、超时处理和后台状态同步，避免慢头像阻塞通知；系统渠道关闭时返回明确结果。
+- 角色经营主页权限及发布结果反馈补全，用户请求发布不受自主发布冷却限制。
+- 修复作品管理按钮对比度、文字作品色块边缘、键盘出现后的消息阅读位置。
+- 使用 Q 与聊天气泡融合的蓝紫图标，新增首次启动彩蛋与创作者赞赏页。
 
-Android 8+. Back up before updating. Native notification layout and picker behavior require device verification.
+## 安装
+
+直接覆盖安装，不要先卸载。此版本沿用 52.1-test.1 的包名与固定签名。若更早的安装包使用另一份签名，安卓无法直接覆盖；请先导出数据备份，再迁移。后续版本继续沿用当前签名。
+
+## 使用说明
+
+联网搜索需要自行配置服务密钥，服务商可能计费。HTML 的联网服务需要允许跨域。安卓后台通知仍受系统电量管理影响，不等同于远程推送；应用被强行停止后无法继续运行。
