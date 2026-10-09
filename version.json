@@ -1,13 +1,13 @@
 {
-  "version": "54",
+  "version": "55",
   "channel": "test",
-  "notes": "设置恢复蓝色并整理分组与返回路径；优化会话管理、评论排版与头像；新增默认关闭的AI路人评论模拟；修复工具失败续接、作品缩略图和键盘视口联动，替换为手写QDM图标。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-54/QasDM_v54.html",
+  "notes": "修复会话删除、临时状态残留、短信备份恢复、切换会话回复、工具恢复去重、弹窗取消与工作流中断；统一菜单和短信主题，修复首页返回。HTML与APK同步。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-55/QasDM_v55.html",
   "android": {
-    "versionCode": 540001,
-    "versionName": "54.0-test.1",
+    "versionCode": 550001,
+    "versionName": "55.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-54/QasDM-54.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-55/QasDM-55.0-test.1.apk"
   },
-  "releaseTag": "android-test-54"
+  "releaseTag": "android-test-55"
 }

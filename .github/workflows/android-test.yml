@@ -1,7 +1,7 @@
 name: Build Android test APK
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/v55-audit-fixes']
     paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
   workflow_dispatch:
 permissions:
@@ -27,7 +27,9 @@ jobs:
         with:
           gradle-version: '8.9'
       - name: Validate version and update logic
-        run: node scripts/test-update.cjs
+        run: |
+          node scripts/test-update.cjs
+          node scripts/test-audit.cjs
       - name: Verify UI behavior
         run: |
           npm install --no-save playwright@1.58.2
@@ -55,6 +57,7 @@ jobs:
           name: QasDM-android-test
           path: dist/*
       - name: Publish test download
+        if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -64,3 +67,4 @@ jobs:
             gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM $NAME 安卓测试版" --notes-file RELEASE_NOTES.md
           fi
           gh release upload "$TAG" dist/* --clobber
+

@@ -1,6 +1,6 @@
 (()=>{
 'use strict';if(!window.QasNative)return;
-window.QasAndroid={versionCode:540001,versionName:'54.0-test.1'};
+window.QasAndroid={versionCode:550001,versionName:'55.0-test.1'};
 const pending=new Map();let seq=0,queue=Promise.resolve();
 QasNative.onmessage=e=>{let r;try{r=JSON.parse(e.data)}catch{return}const p=pending.get(r.id);if(!p)return;pending.delete(r.id);clearTimeout(p.timer);r.error?p.reject(Error(r.error)):p.resolve(r)};
 function send(action,data={}){return new Promise((resolve,reject)=>{const id=++seq;const timer=setTimeout(()=>{pending.delete(id);reject(Error('操作超时'))},180000);pending.set(id,{resolve,reject,timer});QasNative.postMessage(JSON.stringify({id,action,...data}))})}
@@ -10,3 +10,4 @@ window.qasAndroidExport=(blob,name)=>{const task=queue.catch(()=>{}).then(async(
 // Native clipboard remains scoped to the application's main frame.
 try{Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:text=>send('clipboard',{text:String(text)})}})}catch{}
 })();
+
