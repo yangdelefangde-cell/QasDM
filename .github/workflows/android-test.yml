@@ -34,15 +34,6 @@ jobs:
         run: |
           npm install --no-save playwright@1.58.2
           npx playwright install --with-deps chromium
-      - name: Package review browser
-        if: github.ref == 'refs/heads/codex/v59-batch'
-        run: tar -C "$HOME/.cache/ms-playwright" -czf /tmp/review-browser.tar.gz .
-      - uses: actions/upload-artifact@v4
-        if: github.ref == 'refs/heads/codex/v59-batch'
-        with:
-          name: review-browser
-          path: /tmp/review-browser.tar.gz
-          retention-days: 1
       - name: Verify UI behavior
         run: |
           node scripts/test-ui.cjs

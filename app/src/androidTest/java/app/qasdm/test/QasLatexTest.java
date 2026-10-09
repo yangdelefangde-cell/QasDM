@@ -23,10 +23,14 @@ public class QasLatexTest {
             byte[] bytes = Base64.decode(url.substring(url.indexOf(',') + 1), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             assertNotNull(formula, bitmap); assertTrue(result.getDouble("baseline") > 0);
-            boolean visible = false;
+            boolean visible = false, transparent = false;
             for (int y = 0; y < bitmap.getHeight(); y++) for (int x = 0; x < bitmap.getWidth(); x++)
-                visible |= (bitmap.getPixel(x, y) >>> 24) > 0;
-            assertTrue("Empty rendering: " + formula, visible); bitmap.recycle();
+            {
+                int alpha = bitmap.getPixel(x, y) >>> 24;
+                visible |= alpha > 0; transparent |= alpha == 0;
+            }
+            assertTrue("Empty rendering: " + formula, visible);
+            assertTrue("Opaque formula background: " + formula, transparent); bitmap.recycle();
         }
     }
     @Test public void oversizedOrExternalFormulaIsRejected() throws Exception {
