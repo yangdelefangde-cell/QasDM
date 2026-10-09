@@ -1,3 +1,25 @@
+# v58 batch 48–60
+
+Authorization: user explicitly approved this version with “你可以把这个版本改出来了”. HTML and APK use the same source. New feedback after delivery requires a new checklist and explicit approval before edits.
+
+Implemented, awaiting build and browser validation:
+
+- 48: spaced group management and member rows, profile entry beside independent management controls.
+- 49: explicit role-setting categories and complete explanations; existing input IDs/listeners preserved.
+- 50: category return, fixed save/cancel bar, dangerous operations in data sections.
+- 51: grouped cards, title/subtitle hierarchy, dark/light themes and phone/tablet layout based on the supplied reference.
+- 52: stable blur on one wallpaper layer across navigation.
+- 53: explicit global, role and group scopes using existing functional controls.
+- 54: coherent pending/received/returned transfer cards and SVG state icons.
+- 55: developer replay of the first-start prank without resetting account, settings or records.
+- 56: continuous staggered confetti and fade-out transition back to the original screen.
+- 57: purpose-based source comments without historical patch prefixes; actual release/protocol versions remain.
+- 58: persona-preserving story interaction; unreadable mirror/rotation atmosphere is explained to the model, without restoring text or adding a readable copy.
+- 59: questionnaire card/progress feedback and model-controlled atmosphere effects, inspired by ai_survey-1.html, excluding eye emoji.
+- 60: stable contact owner metadata, targeted public profile/avatar tools and registered native comment actions; actual comment content and failure results remain authoritative.
+
+Validation: syntax, version and state checks pass locally. Full browser regression, screenshots, Android compile/lint, signature and bundled-source comparison run on the review branch before publication. External APIs and physical devices remain user verification.
+
 # v57 batch 27–47
 
 Authorization: user approved the full batch with “那你现在可以改了”. HTML and APK share index.html.

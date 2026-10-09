@@ -1,7 +1,7 @@
 name: Build Android test APK
 on:
   push:
-    branches: [main, 'codex/v57-batch']
+    branches: [main, 'codex/v58-batch']
     paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
   workflow_dispatch:
 permissions:
@@ -35,6 +35,12 @@ jobs:
           npm install --no-save playwright@1.58.2
           npx playwright install --with-deps chromium
           node scripts/test-ui.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: QasDM-ui-review
+          path: ui-review/*
+          if-no-files-found: ignore
       - name: Install Android SDK
         run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
       - name: Build APK and run lint

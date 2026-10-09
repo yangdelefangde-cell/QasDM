@@ -1,13 +1,13 @@
 {
-  "version": "57",
+  "version": "58",
   "channel": "test",
-  "notes": "v57：全屏设置、共享供应商、群聊同步与主页修复、折叠任务工作区、工作流技能与授权、Token统计、生图、外部文件预览和全文搜索。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-57/QasDM_v57.html",
+  "notes": "v58：设置分类与视觉重做、群成员管理布局、稳定列表模糊、转账状态卡片、彩蛋重播与退场、保留人设的剧情效果、名片上下文和评论工具解析修复。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-58/QasDM_v58.html",
   "android": {
-    "versionCode": 570001,
-    "versionName": "57.0-test.1",
+    "versionCode": 580001,
+    "versionName": "58.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-57/QasDM-57.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-58/QasDM-58.0-test.1.apk"
   },
-  "releaseTag": "android-test-57"
+  "releaseTag": "android-test-58"
 }

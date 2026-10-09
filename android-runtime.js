@@ -1,6 +1,6 @@
 (()=>{
 'use strict';if(!window.QasNative)return;
-window.QasAndroid={versionCode:570001,versionName:'57.0-test.1'};
+window.QasAndroid={versionCode:580001,versionName:'58.0-test.1'};
 const pending=new Map();let seq=0,queue=Promise.resolve();
 QasNative.onmessage=e=>{let r;try{r=JSON.parse(e.data)}catch{return}const p=pending.get(r.id);if(!p)return;pending.delete(r.id);clearTimeout(p.timer);r.error?p.reject(Error(r.error)):p.resolve(r)};
 function send(action,data={}){return new Promise((resolve,reject)=>{const id=++seq;const timer=setTimeout(()=>{pending.delete(id);reject(Error('操作超时'))},180000);pending.set(id,{resolve,reject,timer});QasNative.postMessage(JSON.stringify({id,action,...data}))})}
