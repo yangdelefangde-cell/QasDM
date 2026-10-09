@@ -1,3 +1,13 @@
+# v57 batch 27–47
+
+Authorization: user approved the full batch with “那你现在可以改了”. HTML and APK share index.html.
+
+Implemented: separate fullscreen settings (28), themes (29), named reusable connections and keys/model selection (30,43), grouped execution records and workspace (31–33), profile layout and group identity/message/settings repairs (34–38), workflow skills (39), back navigation (40), local indexed search (41), capability authorization (42), usage/context accounting (44), image adapters (45), file picker/share previews (46), compact follower counts (47), explicit plugin/MCP separation (27).
+
+Limits: counts start at v57; token estimates are not tokenizer-exact; prices are user-entered estimates; PDF rendering depends on WebView; external API responses and Android file-manager intents require account/device validation. No blanket Android permission is requested for hypothetical future features.
+
+Validation: static/version/state checks pass. CI run 37935597495 passed browser regressions, media restore, Android build/lint, signature and bundled-source comparison. Main release additionally rechecks final navigation, group settings binding and the DeepSeek v1 preset. External accounts and physical-device testing remain user validation.
+
 # v56 development checklist
 
 Authorization: user explicitly approved the entire batch on 2026-10-09 after clarifying that batches should not be limited artificially. HTML and APK share index.html.
