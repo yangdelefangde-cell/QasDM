@@ -2325,7 +2325,7 @@ function connectionEditor57(p=null){const root=page57(p?'编辑供应商':'新�
 // Shared connection references are resolved immediately before every model request.
 function resolveConnection57(p){const c=connection57(p.cfg.connectionId57);if(!c)return;p.cfg.url=c.url;p.cfg.provider56=c.provider;p.cfg.rememberKey=c.rememberKey!==false;const key=connectionKeys56.get(c.id)??c.key??'';sessionKeys.set(p.id,key);p.apiKey=c.rememberKey!==false?key:'';if(p.id===currentId)apiKey=key}
 const requestBase57=requestAI;requestAI=async function(p=active()){resolveConnection57(p);return requestBase57(p)};const modelBase57=modelText;modelText=async function(p,...args){resolveConnection57(p);return modelBase57(p,...args)};
-const mainBase57=mainPage;mainPage=function(root){mainBase57(root);const b=root.querySelectorAll('.profile-stats button')[1],value=countPage(page(),'followers');if(b){b.querySelector('strong').textContent=value>=10000?(value/10000).toFixed(1)+'w':String(value);b.title=String(value)}};
+const mainBase57=mainPage;mainPage=function(root){mainBase57(root);const b=root.querySelectorAll('.profile-stats button')[1],value=countPage(page(),'followers');if(b){b.querySelector('strong').textContent=value>=10000?(Math.round(value/1000)/10).toFixed(1)+'w':String(value);b.title=String(value)}};
 // Execution records remain in history, but occupy one foldable region per user turn.
 const executionFold57=new Map();
 function execution57(p,id){p.executions57||=[];let g=p.executions57.find(g=>g.id===id);if(!g){g={id,goal:latestUserText(p),started:clock(),status:'running'};p.executions57.push(g)}return g}
