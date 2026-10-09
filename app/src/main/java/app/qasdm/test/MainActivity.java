@@ -53,6 +53,12 @@ public class MainActivity extends Activity {
     private JavaScriptReplyProxy finishReply;
     private final ExecutorService files = Executors.newSingleThreadExecutor();
 
+    private void emitViewport(){
+        if(web==null||web.getHeight()<=0)return;
+        int width=web.getWidth(),height=web.getHeight();
+        web.evaluateJavascript("window.qasViewport54&&window.qasViewport54("+width+"/(window.devicePixelRatio||1),"+height+"/(window.devicePixelRatio||1))",null);
+    }
+
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         getWindow().setStatusBarColor(0xff24283d);
@@ -60,6 +66,8 @@ public class MainActivity extends Activity {
         web = new WebView(this);runtimeWeb=web;
         NotificationManager nm=getSystemService(NotificationManager.class);nm.createNotificationChannel(new NotificationChannel("qas-messages","角色消息",NotificationManager.IMPORTANCE_DEFAULT));NotificationChannel silent=new NotificationChannel("qas-silent","角色消息（静音）",NotificationManager.IMPORTANCE_DEFAULT);silent.setSound(null,null);silent.enableVibration(false);nm.createNotificationChannel(silent);
         setContentView(web);
+        getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        web.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(r-l!=or-ol||b-t!=ob-ot)emitViewport();});
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -72,7 +80,7 @@ public class MainActivity extends Activity {
         final WebViewAssetLoader assets = new WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this)).build();
         web.setWebViewClient(new WebViewClient() {
-            @Override public void onPageFinished(WebView v,String url){deliverNotification();}
+            @Override public void onPageFinished(WebView v,String url){deliverNotification();emitViewport();}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
                 return assets.shouldInterceptRequest(req.getUrl());
             }

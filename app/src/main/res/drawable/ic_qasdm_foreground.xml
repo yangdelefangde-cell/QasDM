@@ -1,4 +1,1 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-<path android:fillColor="#FFFFFF" android:fillType="evenOdd" android:pathData="M54,25 A27,27 0,1 1,54 79 A27,27 0,1 1,54 25 M54,36 A16,16 0,1 0,54 68 A16,16 0,1 0,54 36"/>
-<path android:fillColor="#FFFFFF" android:pathData="M66,65 Q73,66 75,70 L82,82 Q83,85 79,84 L63,77 Z"/>
-</vector>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@drawable/qdm_foreground" android:gravity="fill"/>

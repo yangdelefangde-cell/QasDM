@@ -1,13 +1,13 @@
 {
-  "version": "53",
+  "version": "54",
   "channel": "test",
-  "notes": "新增多会话、公共设置和用户档案、作品评论、可配置联网搜索、更新提示、新图标与首次启动彩蛋；修复通知等待头像、角色发布反馈、作品按钮和键盘联动。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-53/QasDM_v53.html",
+  "notes": "设置恢复蓝色并整理分组与返回路径；优化会话管理、评论排版与头像；新增默认关闭的AI路人评论模拟；修复工具失败续接、作品缩略图和键盘视口联动，替换为手写QDM图标。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-54/QasDM_v54.html",
   "android": {
-    "versionCode": 530001,
-    "versionName": "53.0-test.1",
+    "versionCode": 540001,
+    "versionName": "54.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-53/QasDM-53.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-54/QasDM-54.0-test.1.apk"
   },
-  "releaseTag": "android-test-53"
+  "releaseTag": "android-test-54"
 }

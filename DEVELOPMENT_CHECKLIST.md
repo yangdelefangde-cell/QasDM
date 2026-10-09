@@ -1,9 +1,9 @@
-# v53 development checklist
+# v54 development checklist
 
-Authorized by user: 2026-10-08, entire current round, APK and HTML.
+Authorized: user requested the current round on 2026-10-09. APK and standalone HTML share index.html.
 
-Implemented: notification/avatar timeout and lifecycle, stable signing/build identity, update fallback and startup card, public settings, persistent sessions and SMS association, optional user archive, simulated browser timestamps, diary visual distinction, system document picker retained, short about copy and original support image, first-launch prank, publishing permissions/results, work contrast, comments/tools, configurable Tavily search/extract with native bridge, viewport reading position, vector/adaptive icon.
+Implemented: blue controls and compact settings groups; profile menu deduplication; settings child return/layers; compact session labels and dialog; primary DM and interaction tool continuation; canonical comment avatars, flat reply threads, 3-reply folding, target names, regions, small hearts; optional audience simulation with immutable initial statistics, 20 simulated-entry cap, continuity and non-destructive refresh; comment-only automatic replies; artwork canvas thumbnail scaling; first-person diary prompt; font value/range/reset/preview; jump-button scope; native resized viewport bridge; original handwritten QDM launcher/favicon.
 
-Validation: local Chromium UI regression and session/comments tests; update comparison/fallback tests. Android compile/lint/signature and downloaded bundle pending GitHub build. Real-device notification/keyboard/old-signature migration require user validation.
+Validation: local Chromium regression includes persistence, simulation counts/identity/likes/baseline, UI layering, main DM failure continuation and native viewport bottom/old-message anchoring. Update/package consistency tests. GitHub CI compiles/lints Android and verifies unchanged signing certificate plus bundled source.
 
-Limitations: no separate domestic update hosting configured; both fallback sources currently GitHub. Search credentials not provided, no live provider request made. Existing incompatible Android signing certificates cannot be retroactively replaced; export/import needed for those versions. Shared session memory intentionally includes long-term memory only, not entire hidden chat histories.
+Device follow-up: physical Android IME resize/restore and notifications. No Android emulator or connected phone available here. Search and simulation tested with mocked model responses; no live user credentials supplied. Existing diary content retained. Legacy work initial statistics snapshot starts at migration because earlier edit history is unavailable. Existing incompatible signing certificates still require export/import migration; package identity and fixed signing are unchanged.

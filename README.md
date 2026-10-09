@@ -1,6 +1,6 @@
 # QasDM 安卓测试版
 
-当前内容来自 QasDM v51-3。`index.html` 是唯一页面源，构建时复制到 APK，避免网页和 APK 各维护一份代码。
+当前版本为 QasDM v54。`index.html` 是唯一页面源，构建时复制到 APK，避免网页和 APK 各维护一份代码。
 
 ## 下载
 
