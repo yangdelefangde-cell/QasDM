@@ -2,7 +2,7 @@
 
 Authorization: user explicitly approved this version with “你可以把这个版本改出来了”. HTML and APK use the same source. New feedback after delivery requires a new checklist and explicit approval before edits.
 
-Implemented, awaiting build and browser validation:
+Implemented; awaiting the user's device and live-service verification:
 
 - 48: spaced group management and member rows, profile entry beside independent management controls.
 - 49: explicit role-setting categories and complete explanations; existing input IDs/listeners preserved.
@@ -18,7 +18,7 @@ Implemented, awaiting build and browser validation:
 - 59: questionnaire card/progress feedback and model-controlled atmosphere effects, inspired by ai_survey-1.html, excluding eye emoji.
 - 60: stable contact owner metadata, targeted public profile/avatar tools and registered native comment actions; actual comment content and failure results remain authoritative.
 
-Validation: syntax, version and state checks pass locally. Full browser regression, screenshots, Android compile/lint, signature and bundled-source comparison run on the review branch before publication. External APIs and physical devices remain user verification.
+Validation: review CI run 37956508582 passed all browser regressions, category/control visibility, save/cancel and return paths, group management, structured card context and comment tools, story/questionnaire behavior, replay/data preservation, blur and refund rendering, media transfer, Android compile/lint, signature and bundled-source comparison. Final review additionally verifies that a new comment preserves a manually supplied total and returns owner/work/comment identities. Main publication repeats the complete checks. External APIs and physical devices remain user verification.
 
 # v57 batch 27–47
 
