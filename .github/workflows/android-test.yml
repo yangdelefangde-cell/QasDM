@@ -1,0 +1,99 @@
+name: Build Android test APK
+on:
+  push:
+    branches: [main, 'codex/v59-batch']
+    paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: qasdm-android-test
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Validate version and update logic
+        run: |
+          node scripts/test-update.cjs
+          node scripts/test-audit.cjs
+      - name: Install browser
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verify UI behavior
+        run: |
+          node scripts/test-ui.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: QasDM-ui-review
+          path: ui-review/*
+          if-no-files-found: ignore
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
+      - name: Build APK and run lint
+        run: gradle --no-daemon :app:assembleDebug :app:lintDebug
+      - name: Enable emulator acceleration
+        run: |
+          sudo chmod 666 /dev/kvm
+      - name: Verify native math and file picker
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: gradle --no-daemon :app:connectedDebugAndroidTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: QasDM-native-review
+          path: app/build/reports/androidTests/connected/**
+          if-no-files-found: ignore
+      - name: Verify APK signature and bundled page
+        run: |
+          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose --print-certs app/build/outputs/apk/debug/app-debug.apk
+          CERT=$("$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+          test "$CERT" = "e9b29082c2f78809deb9e9f47ff3b93c976f059c6cdba54134ac0cf72f209bff"
+          unzip -p app/build/outputs/apk/debug/app-debug.apk assets/www/index.html | cmp index.html -
+      - name: Prepare downloads
+        run: |
+          mkdir dist
+          node -e "const v=require('./version.json');require('fs').copyFileSync('app/build/outputs/apk/debug/app-debug.apk','dist/QasDM-'+v.android.versionName+'.apk');require('fs').copyFileSync('index.html','dist/QasDM_v'+v.version+'.html')"
+          # Standalone HTML must include its scripts so downloaded HTML also works.
+          python3 scripts/standalone.py
+          (cd dist && sha256sum *.apk *.html > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QasDM-android-test
+          path: dist/*
+      - name: Publish test download
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(node -p "require('./version.json').releaseTag")
+          NAME=$(node -p "require('./version.json').android.versionName")
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM $NAME 安卓测试版" --notes-file RELEASE_NOTES.md
+          else
+            # This test release allows corrected builds; keep its source tag and assets together.
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$TAG" -f sha="$GITHUB_SHA" -F force=true
+            gh release edit "$TAG" --target "$GITHUB_SHA" --notes-file RELEASE_NOTES.md
+          fi
+          gh release upload "$TAG" dist/* --clobber
+
