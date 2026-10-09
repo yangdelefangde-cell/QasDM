@@ -2,7 +2,7 @@
 
 Authorization: user approved the full 20-item batch with “你可以改了”, then asked to continue. HTML and APK share the same page source.
 
-Implemented; regression and native-device checks in progress:
+Implemented and checked in browser regressions and an Android emulator:
 
 - 61: execution records derive the task label from actual tool titles; original task history remains available for continuation.
 - 62: one settings typography/spacing system; padded grouped fields, label/control gaps, readable help, phone and tablet layout.
@@ -25,7 +25,7 @@ Implemented; regression and native-device checks in progress:
 - 79: native picker offers system documents or other installed providers, mixed media MIME types, multiple selection and cancellation, without broad storage access.
 - 80: short settings push/pop transitions, per-page scroll restoration, safe animation cancellation and reduced-motion behavior.
 
-Pending validation: browser behavior and screenshots, Android compile/lint and emulator instrumentation, signing certificate, bundled source and standalone script checks. Live APIs, physical-device rendering and availability of third-party document providers remain device/account validation.
+Validation: review CI run 37978421253 passed the complete browser regression suite, phone/tablet screenshot checks, Android compile/lint, three native instrumentation tests covering eight visible transparent formula cases and file-picker intents, the continuous signing certificate and bundled-source comparison. Standalone HTML and APK were built together. Main publication repeats the complete checks. Live APIs, physical-device rendering and availability of third-party document providers remain device/account validation.
 
 # v58 batch 48–60
 
