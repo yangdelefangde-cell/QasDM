@@ -1,13 +1,13 @@
 {
-  "version": "55",
+  "version": "56",
   "channel": "test",
-  "notes": "修复会话删除、临时状态残留、短信备份恢复、切换会话回复、工具恢复去重、弹窗取消与工作流中断；统一菜单和短信主题，修复首页返回。HTML与APK同步。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-55/QasDM_v55.html",
+  "notes": "v56：供应商与模型连接、兼容 TTS、任务进度与跨对话记忆搜索、剧情效果、连续背景、完整媒体备份及日记排版。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-56/QasDM_v56.html",
   "android": {
-    "versionCode": 550001,
-    "versionName": "55.0-test.1",
+    "versionCode": 560001,
+    "versionName": "56.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-55/QasDM-55.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-56/QasDM-56.0-test.1.apk"
   },
-  "releaseTag": "android-test-55"
+  "releaseTag": "android-test-56"
 }

@@ -1,6 +1,6 @@
 (function(root){
 'use strict';
-const CURRENT_VERSION='55';
+const CURRENT_VERSION='56';
 const VERSION_URL='https://raw.githubusercontent.com/yangdelefangde-cell/QasDM/main/version.json';
 function parts(value){const text=String(value||'').trim();if(!/^v?\d+(?:[-.]\d+)*$/i.test(text))throw Error('版本号格式无效');return text.replace(/^v/i,'').split(/[-.]/).map(Number)}
 function compare(a,b){const x=parts(a),y=parts(b);for(let i=0;i<Math.max(x.length,y.length);i++){const n=(x[i]||0)-(y[i]||0);if(n)return Math.sign(n)}return 0}
