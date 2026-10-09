@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
     private static final String ORIGIN = "https://appassets.androidplatform.net";
     private static final int PICK_FILE = 10, SAVE_FILE = 11, MICROPHONE = 12;
     private WebView web;
+    private Intent pendingFileIntent57;
     private static WebView runtimeWeb;
     private long lastBack;
     private File musicFile;
@@ -80,7 +81,7 @@ public class MainActivity extends Activity {
         final WebViewAssetLoader assets = new WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this)).build();
         web.setWebViewClient(new WebViewClient() {
-            @Override public void onPageFinished(WebView v,String url){deliverNotification();emitViewport();}
+            @Override public void onPageFinished(WebView v,String url){deliverNotification();deliverSharedFile57();emitViewport();}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
                 return assets.shouldInterceptRequest(req.getUrl());
             }
@@ -150,6 +151,7 @@ public class MainActivity extends Activity {
             else toast("请使用应用内的导出按钮保存文件");
         });
         pendingConversation=getIntent().getStringExtra("conversationId");pendingThread=getIntent().getStringExtra("threadId");
+        pendingFileIntent57=getIntent();
         web.loadUrl(ORIGIN + "/assets/www/index.html");
     }
 
@@ -234,8 +236,25 @@ public class MainActivity extends Activity {
 
         nm.notify((cid+tid).hashCode(),b.build());
     }
-    @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);pendingConversation=intent.getStringExtra("conversationId");pendingThread=intent.getStringExtra("threadId");deliverNotification();}
+    @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);pendingConversation=intent.getStringExtra("conversationId");pendingThread=intent.getStringExtra("threadId");deliverNotification();pendingFileIntent57=intent;deliverSharedFile57();}
     private void deliverNotification(){if(pendingConversation==null||pendingConversation.isEmpty())return;String cid=pendingConversation,tid=pendingThread==null?"":pendingThread;pendingConversation="";emit("if(window.qasOpenNotification52){window.qasOpenNotification52("+JSONObject.quote(cid)+","+JSONObject.quote(tid)+")}else{window.qasPendingNotification52=["+JSONObject.quote(cid)+","+JSONObject.quote(tid)+"]}");}
+    private void deliverSharedFile57(){
+        Intent intent=pendingFileIntent57;if(intent==null)return;pendingFileIntent57=null;
+        Uri selected=null;
+        if(Intent.ACTION_VIEW.equals(intent.getAction()))selected=intent.getData();
+        else if(Intent.ACTION_SEND.equals(intent.getAction()))selected=intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if(selected==null||!"content".equals(selected.getScheme()))return;
+        final Uri uri=selected;final String transfer="shared-"+System.nanoTime();
+        files.execute(()->{String name="共享文件",type=getContentResolver().getType(uri);if(type==null)type="application/octet-stream";
+            try(android.database.Cursor cursor=getContentResolver().query(uri,new String[]{android.provider.OpenableColumns.DISPLAY_NAME},null,null,null)){if(cursor!=null&&cursor.moveToFirst())name=cursor.getString(0);}catch(Exception ignored){}
+            final String filename=name,mime=type;
+            try(InputStream input=getContentResolver().openInputStream(uri)){
+                if(input==null)throw new IOException("无法读取共享文件");byte[] buffer=new byte[49152];int n;long total=0;
+                while((n=input.read(buffer))!=-1){total+=n;if(total>32L*1024*1024)throw new IOException("预览文件上限为32 MB");String data=Base64.encodeToString(buffer,0,n,Base64.NO_WRAP);runOnUiThread(()->emit("window.qasSharedFile57?window.qasSharedFile57("+JSONObject.quote(transfer)+","+JSONObject.quote(filename)+","+JSONObject.quote(mime)+","+JSONObject.quote(data)+",false):(window.qasPendingFiles57||=[]).push(["+JSONObject.quote(transfer)+","+JSONObject.quote(filename)+","+JSONObject.quote(mime)+","+JSONObject.quote(data)+",false])"));}
+                runOnUiThread(()->emit("window.qasSharedFile57?window.qasSharedFile57("+JSONObject.quote(transfer)+","+JSONObject.quote(filename)+","+JSONObject.quote(mime)+",'',true):(window.qasPendingFiles57||=[]).push(["+JSONObject.quote(transfer)+","+JSONObject.quote(filename)+","+JSONObject.quote(mime)+",'',true])"));
+            }catch(Exception e){runOnUiThread(()->emit("window.qasSharedFile57&&window.qasSharedFile57("+JSONObject.quote(transfer)+",'','', '',true,"+JSONObject.quote("共享文件读取失败："+e.getMessage())+")"));}
+        });
+    }
     private void ack(JavaScriptReplyProxy reply, int id, String error) {
         try { JSONObject value = new JSONObject(); value.put("id", id); if (error != null) value.put("error",error); reply.postMessage(value.toString()); }
         catch (Exception ignored) { }

@@ -1,13 +1,13 @@
 {
-  "version": "56",
+  "version": "57",
   "channel": "test",
-  "notes": "v56：供应商与模型连接、兼容 TTS、任务进度与跨对话记忆搜索、剧情效果、连续背景、完整媒体备份及日记排版。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-56/QasDM_v56.html",
+  "notes": "v57：全屏设置、共享供应商、群聊同步与主页修复、折叠任务工作区、工作流技能与授权、Token统计、生图、外部文件预览和全文搜索。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-57/QasDM_v57.html",
   "android": {
-    "versionCode": 560001,
-    "versionName": "56.0-test.1",
+    "versionCode": 570001,
+    "versionName": "57.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-56/QasDM-56.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-57/QasDM-57.0-test.1.apk"
   },
-  "releaseTag": "android-test-56"
+  "releaseTag": "android-test-57"
 }

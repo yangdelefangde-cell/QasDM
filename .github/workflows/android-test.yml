@@ -1,7 +1,7 @@
 name: Build Android test APK
 on:
   push:
-    branches: [main, 'codex/v56-batch']
+    branches: [main, 'codex/v57-batch']
     paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
   workflow_dispatch:
 permissions:
