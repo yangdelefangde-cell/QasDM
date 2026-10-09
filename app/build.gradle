@@ -9,6 +9,7 @@ android {
         targetSdk 34
         versionCode releaseInfo.android.versionCode as int
         versionName releaseInfo.android.versionName
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         buildConfigField 'String', 'WEB_VERSION', '"' + releaseInfo.version + '"'
     }
     buildFeatures { buildConfig true }
@@ -17,11 +18,17 @@ android {
     }
     buildTypes { debug { signingConfig signingConfigs.test } }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
-    sourceSets { main { assets.srcDirs = [layout.buildDirectory.dir('generated/assets')] } }
+    sourceSets { main { assets.srcDirs = [layout.buildDirectory.dir('generated/assets'), 'src/main/assets'] } }
 }
 tasks.register('prepareWebAssets', Copy) {
     from(rootProject.projectDir) { include 'index.html', 'update.js', 'android-runtime.js' }
     into(layout.buildDirectory.dir('generated/assets/www'))
 }
 tasks.named('preBuild').configure { dependsOn 'prepareWebAssets' }
-dependencies { implementation 'androidx.webkit:webkit:1.12.1' }
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'ru.noties:jlatexmath-android:0.2.0'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}
+

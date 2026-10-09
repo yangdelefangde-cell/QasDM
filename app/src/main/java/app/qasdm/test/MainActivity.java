@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
     private int finishId;
     private JavaScriptReplyProxy finishReply;
     private final ExecutorService files = Executors.newSingleThreadExecutor();
+    private final ExecutorService formulas = Executors.newSingleThreadExecutor();
 
     private void emitViewport(){
         if(web==null||web.getHeight()<=0)return;
@@ -96,14 +97,17 @@ public class MainActivity extends Activity {
             @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
                 if (fileCallback != null) fileCallback.onReceiveValue(null);
                 fileCallback = callback;
-                Intent pick = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                pick.addCategory(Intent.CATEGORY_OPENABLE);
-                String[] types = params.getAcceptTypes();
-                String type = types.length == 1 && types[0].contains("/") ? types[0] : "*/*";
-                pick.setType(type);
-                pick.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, params.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE);
-                Runnable documents=()->{try{startActivityForResult(pick,PICK_FILE);}catch(Exception e){if(fileCallback!=null)fileCallback.onReceiveValue(null);fileCallback=null;toast("无法打开文件选择器");}};
-                if(type.startsWith("image/")){new android.app.AlertDialog.Builder(MainActivity.this).setTitle("选择图片来源").setItems(new String[]{"系统相册","系统文件管理"},(dialog,which)->{if(which==1){documents.run();return;}Intent photo=new Intent(Intent.ACTION_GET_CONTENT).setType("image/*").addCategory(Intent.CATEGORY_OPENABLE);photo.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,params.getMode()==FileChooserParams.MODE_OPEN_MULTIPLE);try{startActivityForResult(Intent.createChooser(photo,"选择图片"),PICK_FILE);}catch(Exception e){documents.run();}}).setOnCancelListener(dialog->{if(fileCallback!=null)fileCallback.onReceiveValue(null);fileCallback=null;}).show();}else documents.run();
+                final String[] types = acceptedMimeTypes(params.getAcceptTypes());
+                final boolean multiple = params.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE;
+                new AlertDialog.Builder(MainActivity.this).setTitle("选择文件来源")
+                    .setItems(new String[]{"系统文件浏览器", "其他应用（文件管理器／相册）"}, (dialog, which) -> {
+                        Intent pick = filePickerIntent(which == 0 ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT, types, multiple);
+                        try { startActivityForResult(which == 0 ? pick : Intent.createChooser(pick, "选择提供文件的应用"), PICK_FILE); }
+                        catch (Exception error) {
+                            try { startActivityForResult(filePickerIntent(Intent.ACTION_GET_CONTENT, types, multiple), PICK_FILE); }
+                            catch (Exception missing) { finishFileChoice(null); toast("没有可用的文件选择应用"); }
+                        }
+                    }).setOnCancelListener(dialog -> finishFileChoice(null)).show();
                 return true;
             }
             @Override public void onPermissionRequest(PermissionRequest request) {
@@ -159,6 +163,11 @@ public class MainActivity extends Activity {
         int id = m.getInt("id");
         try {
             switch (m.getString("action")) {
+                case "latexRender":
+                    formulas.execute(() -> {
+                        try { JSONObject result = QasLatex.render(m); result.put("id", id); runOnUiThread(() -> reply.postMessage(result.toString())); }
+                        catch (Exception error) { runOnUiThread(() -> ack(reply, id, error.getMessage() == null ? "公式无法渲染" : error.getMessage())); }
+                    }); break;
                 case "settings":
                     JSONObject settings=new JSONObject();settings.put("id",id);settings.put("background",getSharedPreferences("qas-native",0).getBoolean("background",false));if(getSharedPreferences("qas-native",0).getBoolean("background",false))startForegroundService(new Intent(this,QasService.class).setAction("roles").putExtra("enabled",true));reply.postMessage(settings.toString());break;
                 case "notificationPermission":
@@ -273,7 +282,7 @@ public class MainActivity extends Activity {
                 if (data.getClipData() != null) for (int i=0; i<data.getClipData().getItemCount(); i++) selected.add(data.getClipData().getItemAt(i).getUri());
                 else if (data.getData() != null) selected.add(data.getData());
             }
-            fileCallback.onReceiveValue(selected.isEmpty() ? null : selected.toArray(new Uri[0])); fileCallback = null;
+            finishFileChoice(selected.isEmpty() ? null : selected.toArray(new Uri[0]));
         }
         if (request == SAVE_FILE && finishReply != null) {
             final JavaScriptReplyProxy reply = finishReply; final int id = finishId;
@@ -303,6 +312,27 @@ public class MainActivity extends Activity {
     private boolean trustedOrigin(Uri uri) {
         return "https".equals(uri.getScheme()) && "appassets.androidplatform.net".equals(uri.getHost()) && (uri.getPort() == -1 || uri.getPort() == 443);
     }
+    static String[] acceptedMimeTypes(String[] accepts) {
+        java.util.LinkedHashSet<String> types = new java.util.LinkedHashSet<>();
+        for (String item : accepts) for (String raw : item.split(",")) {
+            String type = raw.trim().toLowerCase(java.util.Locale.ROOT);
+            if (type.startsWith(".")) type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(type.substring(1));
+            if (type != null && type.matches("[a-z0-9.+*-]+/[a-z0-9.+*-]+")) types.add(type);
+        }
+        return types.toArray(new String[0]);
+    }
+    static Intent filePickerIntent(String action, String[] types, boolean multiple) {
+        Intent pick = new Intent(action).addCategory(Intent.CATEGORY_OPENABLE);
+        pick.setType(types.length == 1 ? types[0] : "*/*");
+        if (types.length > 1) pick.putExtra(Intent.EXTRA_MIME_TYPES, types);
+        pick.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, multiple);
+        pick.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return pick;
+    }
+    private void finishFileChoice(Uri[] value) {
+        ValueCallback<Uri[]> callback = fileCallback; fileCallback = null;
+        if (callback != null) callback.onReceiveValue(value);
+    }
     private void openExternal(Uri uri) {
         String scheme = uri.getScheme();
         if (!"https".equals(scheme) && !"http".equals(scheme) && !"mailto".equals(scheme)) return;
@@ -321,7 +351,7 @@ public class MainActivity extends Activity {
     @Override protected void onDestroy() {
         if (fileCallback != null) fileCallback.onReceiveValue(null);
         if (microphoneRequest != null) microphoneRequest.deny();
-        clearExport(); files.shutdown(); if(QasService.current==null){web.destroy();runtimeWeb=null;} super.onDestroy();
+        clearExport(); files.shutdown(); formulas.shutdown(); if(QasService.current==null){web.destroy();runtimeWeb=null;} super.onDestroy();
     }
 }
 

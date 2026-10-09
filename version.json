@@ -1,13 +1,13 @@
 {
-  "version": "58",
+  "version": "59",
   "channel": "test",
-  "notes": "v58：设置分类与视觉重做、群成员管理布局、稳定列表模糊、转账状态卡片、彩蛋重播与退场、保留人设的剧情效果、名片上下文和评论工具解析修复。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-58/QasDM_v58.html",
+  "notes": "v59：统一设置排版与主题、日记导航、供应商与背景管理、文字互动和二进制雨、语音图标，安卓 JLaTeXMath 与多来源文件选择。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-59/QasDM_v59.html",
   "android": {
-    "versionCode": 580001,
-    "versionName": "58.0-test.1",
+    "versionCode": 590001,
+    "versionName": "59.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-58/QasDM-58.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-59/QasDM-59.0-test.1.apk"
   },
-  "releaseTag": "android-test-58"
+  "releaseTag": "android-test-59"
 }

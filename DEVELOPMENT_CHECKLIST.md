@@ -1,3 +1,32 @@
+# v59 batch 61–80
+
+Authorization: user approved the full 20-item batch with “你可以改了”, then asked to continue. HTML and APK share the same page source.
+
+Implemented; regression and native-device checks in progress:
+
+- 61: execution records derive the task label from actual tool titles; original task history remains available for continuation.
+- 62: one settings typography/spacing system; padded grouped fields, label/control gaps, readable help, phone and tablet layout.
+- 63: permission subgroups separate cross-conversation access, role DM and simulated SMS; explanation and counts stay with their control.
+- 64: nested diary overlays stay above the settings page and return without losing the role draft or scroll position.
+- 65: multiple named connections, explicit provider presets, reusable existing role configurations, model selector plus manual IDs and saved keys.
+- 66: common light/dark tokens for settings, input fields, buttons, footers and nested pages.
+- 67: independently randomized confetti positions, speeds, delays, sway and spin with continuous off-screen wrapping.
+- 68: obsolete setting separators and empty grouping wrappers removed.
+- 69: the provided image.pollinations.ai/prompt/{prompt} URL is a direct, encoded GET template, separate from API POST mode; no chat key sent in template mode.
+- 70: web search and user archive configuration use the same fullscreen page layout and save/cancel bar.
+- 71: APK formula rendering uses unmodified JLaTeXMath Android 0.2.0 on a worker thread, transparent PNGs and inline baselines; HTML retains KaTeX. Original license and linking exception bundled.
+- 72: gradual text fill and falling text effects obey the lower of a user-set cap and a 10-second ceiling; one-choice story scenes supported.
+- 73: ordinary popup cards adopt the supplied rounded/blurred/divided-button reference; notification banners remain unchanged.
+- 74: six public backgrounds share entry points and saved image/opacity/blur settings: home, own profile, diary, SMS list, plugins, browsing history. Private-message and role-profile backgrounds retain their separate controls.
+- 75: glow color, strength and targets for text, choices, input and send; individual choice overrides and selection feedback.
+- 76: text-block scale and rotation, optional animation and independent choice transforms; model informed that atmospheric text may be unreadable.
+- 77: adjustable colored binary rain in story scenes and questionnaires, inspired by the supplied reference.
+- 78: fixed vector play/pause icons inside circular bases, proportional waveform/duration spacing across font sizes.
+- 79: native picker offers system documents or other installed providers, mixed media MIME types, multiple selection and cancellation, without broad storage access.
+- 80: short settings push/pop transitions, per-page scroll restoration, safe animation cancellation and reduced-motion behavior.
+
+Pending validation: browser behavior and screenshots, Android compile/lint and emulator instrumentation, signing certificate, bundled source and standalone script checks. Live APIs, physical-device rendering and availability of third-party document providers remain device/account validation.
+
 # v58 batch 48–60
 
 Authorization: user explicitly approved this version with “你可以把这个版本改出来了”. HTML and APK use the same source. New feedback after delivery requires a new checklist and explicit approval before edits.

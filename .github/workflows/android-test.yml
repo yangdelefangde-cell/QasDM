@@ -1,7 +1,7 @@
 name: Build Android test APK
 on:
   push:
-    branches: [main, 'codex/v58-batch']
+    branches: [main, 'codex/v59-batch']
     paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
   workflow_dispatch:
 permissions:
@@ -12,7 +12,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -30,10 +30,21 @@ jobs:
         run: |
           node scripts/test-update.cjs
           node scripts/test-audit.cjs
-      - name: Verify UI behavior
+      - name: Install browser
         run: |
           npm install --no-save playwright@1.58.2
           npx playwright install --with-deps chromium
+      - name: Package review browser
+        if: github.ref == 'refs/heads/codex/v59-batch'
+        run: tar -C "$HOME/.cache/ms-playwright" -czf /tmp/review-browser.tar.gz .
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/codex/v59-batch'
+        with:
+          name: review-browser
+          path: /tmp/review-browser.tar.gz
+          retention-days: 1
+      - name: Verify UI behavior
+        run: |
           node scripts/test-ui.cjs
       - uses: actions/upload-artifact@v4
         if: always()
@@ -45,6 +56,23 @@ jobs:
         run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
       - name: Build APK and run lint
         run: gradle --no-daemon :app:assembleDebug :app:lintDebug
+      - name: Enable emulator acceleration
+        run: |
+          sudo chmod 666 /dev/kvm
+      - name: Verify native math and file picker
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: gradle --no-daemon :app:connectedDebugAndroidTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: QasDM-native-review
+          path: app/build/reports/androidTests/connected/**
+          if-no-files-found: ignore
       - name: Verify APK signature and bundled page
         run: |
           "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose --print-certs app/build/outputs/apk/debug/app-debug.apk
