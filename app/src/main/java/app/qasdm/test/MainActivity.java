@@ -171,6 +171,10 @@ public class MainActivity extends Activity {
                     final String searchUrl=m.getString("url"),searchKey=m.getString("key"),searchBody=m.getString("body");
                     if(!searchUrl.startsWith("https://")||searchBody.length()>20000)throw new IOException("搜索请求无效");
                     files.execute(()->{try{java.net.HttpURLConnection connection=(java.net.HttpURLConnection)new java.net.URL(searchUrl).openConnection();connection.setConnectTimeout(8000);connection.setReadTimeout(20000);connection.setInstanceFollowRedirects(false);connection.setRequestMethod("POST");connection.setDoOutput(true);connection.setRequestProperty("Content-Type","application/json");connection.setRequestProperty("Authorization","Bearer "+searchKey);try(OutputStream output=connection.getOutputStream()){output.write(searchBody.getBytes(java.nio.charset.StandardCharsets.UTF_8));}int status=connection.getResponseCode();if(status<200||status>=300)throw new IOException("搜索服务 HTTP "+status);ByteArrayOutputStream output=new ByteArrayOutputStream();try(InputStream input=connection.getInputStream()){byte[] buffer=new byte[8192];int n;while((n=input.read(buffer))!=-1){if(output.size()+n>2097152)throw new IOException("搜索结果过大");output.write(buffer,0,n);}}connection.disconnect();JSONObject result=new JSONObject();result.put("id",id);result.put("body",output.toString("UTF-8"));runOnUiThread(()->reply.postMessage(result.toString()));}catch(Exception error){runOnUiThread(()->ack(reply,id,error.getMessage()));}});break;
+                case "vibrate":
+                    android.os.Vibrator vibrator=getSystemService(android.os.Vibrator.class);
+                    if(vibrator!=null&&vibrator.hasVibrator())vibrator.vibrate(android.os.VibrationEffect.createOneShot(Math.max(20,Math.min(200,m.optInt("duration",100))),android.os.VibrationEffect.DEFAULT_AMPLITUDE));
+                    ack(reply,id,null);break;
                 case "notify":
                     notifyRole(m);ack(reply,id,null);break;
                 case "musicStart":
@@ -301,3 +305,4 @@ public class MainActivity extends Activity {
         clearExport(); files.shutdown(); if(QasService.current==null){web.destroy();runtimeWeb=null;} super.onDestroy();
     }
 }
+

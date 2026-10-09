@@ -15,7 +15,7 @@ Authorization: user explicitly approved the entire batch on 2026-10-09 after cla
 
 ## Verification
 
-Local syntax, version and state-schema checks are run before submission. CI additionally exercises existing regressions and new provider, TTS, memory permission, task, effect, wallpaper, diary and cross-device media restore tests, followed by Android compile/lint, signature and bundled-source checks. Record actual CI outcome after completion.
+Local syntax, version and state-schema checks are run before submission. CI additionally exercises existing regressions and new provider, TTS, memory permission, task, effect, wallpaper, diary and cross-device media restore tests, followed by Android compile/lint, signature and bundled-source checks. CI run 37925360834 passed the full page/device-transfer regressions, Android compile/lint, signature and bundled-source checks on 2026-10-09. The final native-vibration addition is rechecked before release.
 
 23 remains installation verification on the user's device. Prior user-verified v54 keyboard/notifications (10) and search/audience simulation (11) remain verified. New HTML/APK build behavior needs user experience feedback; automated tests do not replace physical-device checks.
 
