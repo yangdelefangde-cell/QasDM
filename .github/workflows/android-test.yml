@@ -65,6 +65,10 @@ jobs:
           NAME=$(node -p "require('./version.json').android.versionName")
           if ! gh release view "$TAG" >/dev/null 2>&1; then
             gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM $NAME 安卓测试版" --notes-file RELEASE_NOTES.md
+          else
+            # This test release allows corrected builds; keep its source tag and assets together.
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$TAG" -f sha="$GITHUB_SHA" -F force=true
+            gh release edit "$TAG" --target "$GITHUB_SHA" --notes-file RELEASE_NOTES.md
           fi
           gh release upload "$TAG" dist/* --clobber
 
