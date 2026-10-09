@@ -245,7 +245,7 @@ public class MainActivity extends Activity {
         else if(Intent.ACTION_SEND.equals(intent.getAction()))selected=intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if(selected==null||!"content".equals(selected.getScheme()))return;
         final Uri uri=selected;final String transfer="shared-"+System.nanoTime();
-        files.execute(()->{String name="共享文件",type=getContentResolver().getType(uri);if(type==null)type="application/octet-stream";
+        files.execute(()->{String name="共享文件",type=null;try{type=getContentResolver().getType(uri);}catch(Exception ignored){}if(type==null)type="application/octet-stream";
             try(android.database.Cursor cursor=getContentResolver().query(uri,new String[]{android.provider.OpenableColumns.DISPLAY_NAME},null,null,null)){if(cursor!=null&&cursor.moveToFirst())name=cursor.getString(0);}catch(Exception ignored){}
             final String filename=name,mime=type;
             try(InputStream input=getContentResolver().openInputStream(uri)){
