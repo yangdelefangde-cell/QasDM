@@ -24,7 +24,11 @@ tasks.register('prepareWebAssets', Copy) {
     from(rootProject.projectDir) { include 'index.html', 'update.js', 'android-runtime.js' }
     into(layout.buildDirectory.dir('generated/assets/www'))
 }
-tasks.named('preBuild').configure { dependsOn 'prepareWebAssets' }
+tasks.register('prepareLicenseAssets', Copy) {
+    from(rootProject.projectDir) { include 'LICENSE', 'THIRD_PARTY_NOTICES.md' }
+    into(layout.buildDirectory.dir('generated/assets/licenses'))
+}
+tasks.named('preBuild').configure { dependsOn 'prepareWebAssets', 'prepareLicenseAssets' }
 dependencies {
     implementation 'androidx.webkit:webkit:1.12.1'
     implementation 'ru.noties:jlatexmath-android:0.2.0'

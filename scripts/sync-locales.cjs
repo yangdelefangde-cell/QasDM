@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..'),file=path.join(root,'index.html');
+const data=JSON.parse(fs.readFileSync(path.join(__dirname,'locales-v60.json'),'utf8'));
+const tables=['english','japanese','traditional'].map(name=>'Object.assign('+name+','+JSON.stringify(data[name])+');').join('\n')+'\nconst traditionalChars60='+JSON.stringify(data.traditionalChars)+';';
+const runtime=fs.readFileSync(path.join(__dirname,'localization-runtime60.js'),'utf8');
+let html=fs.readFileSync(file,'utf8');
+html=html.replace(/\/\/ BEGIN LOCALE TABLES 60[\s\S]*?\/\/ END LOCALE TABLES 60/,()=>'// BEGIN LOCALE TABLES 60\n'+tables+'\n// END LOCALE TABLES 60');
+html=html.replace(/\/\/ BEGIN LOCALIZATION RUNTIME 60[\s\S]*?\/\/ END LOCALIZATION RUNTIME 60/,()=>'// BEGIN LOCALIZATION RUNTIME 60\n'+runtime+'\n// END LOCALIZATION RUNTIME 60');
+fs.writeFileSync(file,html);
+console.log('Embedded '+Object.keys(data.english).length+' UI translations for English, Japanese and Traditional Chinese.');

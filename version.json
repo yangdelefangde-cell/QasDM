@@ -1,13 +1,13 @@
 {
-  "version": "59",
+  "version": "60",
   "channel": "test",
-  "notes": "v59：统一设置排版与主题、日记导航、供应商与背景管理、文字互动和二进制雨、语音图标，安卓 JLaTeXMath 与多来源文件选择。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-59/QasDM_v59.html",
+  "notes": "v60：修复短信收消息闪烁与弹窗位移，完善主页背景、深色模式、授权预览、文字特效、设置间距和三种界面语言。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-60/QasDM_v60.html",
   "android": {
-    "versionCode": 590001,
-    "versionName": "59.0-test.1",
+    "versionCode": 600001,
+    "versionName": "60.0-test.1",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-59/QasDM-59.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-60/QasDM-60.0-test.1.apk"
   },
-  "releaseTag": "android-test-59"
+  "releaseTag": "android-test-60"
 }

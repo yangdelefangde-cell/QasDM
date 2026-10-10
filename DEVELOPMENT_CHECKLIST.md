@@ -1,3 +1,20 @@
+# v60 continuation and feedback
+
+Authorization: user approved continuing the unfinished v60 work and the new SMS/popup feedback with “你可以接着上个窗口的工作以及这一轮的反馈继续改了”, then “你继续吧”. Recovered the uncommitted v60 source from the previous workspace. HTML and APK continue to use one source.
+
+- Keep the own-profile background entry inside the existing editor, with the original profile header layout and a legible full-page background.
+- Complete dark theme scopes for profiles, plugins, popups and settings child pages.
+- Show human-readable authorization summaries, actual file/post text and image previews; keep raw arguments under collapsed details.
+- Use the supplied iOS alert fade/scale timing, stable centered positioning and an accessible close button. Notification banners retain their independent animations.
+- Randomize text fill positions, font sizes, rotation, gaps and overlap; enforce the shorter of the configured duration and ten seconds. Keep immediate exit, independent effect color/glow and cleanup.
+- Add the user-specified free-use/personal-modification license, allow free distribution of unmodified official files, prohibit paid distribution and modified-version redistribution, and preserve author/license/donation credit. Third-party licenses remain separate.
+- Extend English, Japanese and Traditional Chinese UI copy and newly opened-page localization. Preserve role names, user content, chat messages and original work text; support switching back to Simplified Chinese.
+- Compact setting switch padding and keep color controls as circular swatches without emoji.
+- Update SMS history incrementally, retain existing message/contact nodes, batch bubble-tail measurements and preserve reading scroll position. Only animate hidden-to-visible surface transitions; incoming messages and appearance class changes do not restart the SMS page entrance.
+- Separate SMS contact popup positioning from its scale animation to remove horizontal displacement.
+
+Validation completed locally: node scripts/test-audit.cjs, test-update.cjs and the complete test-ui.cjs suite passed, including v60 phone-size regressions. Gradle :app:assembleDebug and :app:lintDebug passed with zero lint errors. The APK declares versionCode 600001 / versionName 60.0-test.1, retains the existing e9b29082c2f78809deb9e9f47ff3b93c976f059c6cdba54134ac0cf72f209bff signing certificate, and contains byte-identical index.html, update.js and android-runtime.js. Standalone HTML embeds both scripts. UI tests sample every animation frame for SMS visibility and popup centering, exercise actual SMS send/reply, and check all three languages and original content. Android emulator instrumentation was not rerun in this environment; native Java sources and engines are unchanged from the prior verified release. Physical-device behavior and live external APIs remain user validation. Public GitHub publication was initially blocked by automatic approval review. The user subsequently replied “我允许” to the explicit request to push this version to the existing public QasDM repository and publish a test release. Publication is now authorized; branch CI will verify the final source before the main branch release workflow runs.
+
 # v59 batch 61–80
 
 Authorization: user approved the full 20-item batch with “你可以改了”, then asked to continue. HTML and APK share the same page source.

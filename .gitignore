@@ -2,3 +2,5 @@
 **/build/
 local.properties
 *.apk
+ui-review/
+dist/
