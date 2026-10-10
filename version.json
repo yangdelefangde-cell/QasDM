@@ -3,7 +3,7 @@
   "publicVersion": "0.9.0",
   "developmentVersion": "60",
   "channel": "public-test",
-  "notes": "v0.9.0 公开测试版：基于内部 v60，包含角色私信、模拟短信、群聊、日记与记忆、音乐房间、媒体分享和互动效果。仍有不稳定和 bug，可到 Qas 的抖音作品评论区或私信反馈（抖音号 idontknowqas）。",
+  "notes": "公开测试版：基于内部 v60，包含角色私信、模拟短信、群聊、日记与记忆、音乐房间、媒体分享和互动效果。仍有不稳定和 bug，可到 Qas 的抖音作品评论区或私信反馈（抖音号 idontknowqaslove）。",
   "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/v0.9.0/QasDM_v0.9.0.html",
   "android": {
     "versionCode": 600002,
