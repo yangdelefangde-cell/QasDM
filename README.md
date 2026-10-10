@@ -1,32 +1,73 @@
-# QasDM 安卓测试版
+# QasDM
 
-当前版本为 QasDM v60。`index.html` 是唯一页面源，构建时复制到 APK，避免网页和 APK 各维护一份代码。
+角色私信、模拟短信、群聊、日记与记忆、音乐房间、媒体分享和互动效果。提供 Android APK 与可独立打开的 HTML。
+
+**当前版本：v0.9.0 公开测试版。** 项目仍在开发，目前还有一些不稳定和 bug，欢迎体验与反馈。
+
+**作者：Qas · 抖音号：`idontknowqas`**
+
+## 功能
+
+| 功能 | 支持内容 |
+| --- | --- |
+| 角色私信 | 创建与配置角色，连续发消息、主动消息、引用、编辑、撤回、备注、置顶、免打扰、拉黑与聊天记录分享。 |
+| 模拟短信 | 独立联系人与短信列表，同一角色的私信与短信记忆互通；已知／未知号码、拉黑后的短信互动、联系人连发程度与消息轰炸。 |
+| 群聊与角色间对话 | 多角色群聊、成员邀请、群资料与群公告；可让角色之间进行独立对话。 |
+| 语音与模拟通话 | 语音消息、语音合成、应用内模拟通话；可允许角色主动发起或挂断通话。 |
+| 日记与记忆 | 每个角色独立的日记本，角色主动写日记、上下文记忆压缩、旧聊天与日记检索，按设置开放跨对话读取。 |
+| 音乐房间 | 单人听歌、邀请角色一起听、歌曲播放与歌词、房间聊天；角色可发起、接受或拒绝邀请。 |
+| 媒体与名片 | 图片、表情包、文件、公共／角色专属预设图片；分享角色名片，使用预设图片更换头像。 |
+| 主页与作品 | 自定义主页资料与背景，发布模拟作品、点赞与评论，允许角色按权限查看和互动。 |
+| 互动效果 | 剧情选项、问卷与输入控件，文字铺满／掉落、发光、缩放、旋转、乱码与二进制雨等效果；提供退出入口。 |
+| 外观与语言 | 深色／浅色模式、字号、头像与气泡样式；各页面独立背景、不透明度与模糊度；简体中文、繁体中文、英文、日文。 |
+| 内容渲染 | Markdown、LaTeX 与 Mermaid。APK 使用 JLaTeXMath Android，HTML 使用 KaTeX，两种公式引擎的命令支持存在差异。 |
+| 模型与工具 | 多个命名 API 连接、模型列表选择与手动填写、角色复用连接；翻译、联网搜索、图像生成、工作流、插件与实验性 MCP 接口，操作授权与执行记录。 |
+| 数据与调试 | 备份导出／导入、历史快照、存储状态、模型返回检查、token 用量与成本统计、脱敏诊断导出。 |
+
+短信、通话、号码、作品与社交互动均为应用内模拟。短信界面的相册／加号、麦克风与视频通话入口暂未开放。主动消息需要页面保持运行，后台暂停可能影响触发；MCP 和插件相关能力仍在测试。
 
 ## 下载
 
-在 [Releases](https://github.com/yangdelefangde-cell/QasDM/releases) 下载 APK。首个构建完成后出现下载文件。Android 8.0 及以上可安装。
+- [Android APK · v0.9.0](https://github.com/yangdelefangde-cell/QasDM/releases/download/v0.9.0/QasDM-0.9.0.apk) — Android 8.0 及以上。
+- [独立 HTML · v0.9.0](https://github.com/yangdelefangde-cell/QasDM/releases/download/v0.9.0/QasDM_v0.9.0.html) — 下载后使用浏览器打开。
+- [发布页面与文件校验值](https://github.com/yangdelefangde-cell/QasDM/releases/tag/v0.9.0)
 
-## 构建
+APK 与 HTML 使用同一份页面源码。v0.9.0 沿用此前内测 APK 的包名与签名，可覆盖安装；浏览器与 APK 的数据不自动互通，可通过备份迁移。
 
-GitHub Actions 在 main 变更后自动运行，也支持手动运行。固定使用 JDK 17、Gradle 8.9、AGP 8.7.3、compileSdk 35、targetSdk 34。
+## 开始使用
 
-本地安装 Android SDK 后运行 `gradle :app:assembleDebug :app:lintDebug`。工作流生成 APK、可独立打开的 HTML 和 SHA256SUMS。
+1. 安装 APK 或打开 HTML，在设置中添加 API 连接，填写接口地址、密钥与模型。
+2. 创建角色，填写角色设定并选择连接，即可开始私信；按需开启主动消息、连发、日记及其他功能。
+3. 语音合成、翻译、联网搜索和生图需要对应的服务配置。QasDM 免费，外部服务的费用按供应商规则计算。
+4. 聊天与媒体保存在当前设备的应用／浏览器存储中。更换设备或清理数据前，可在设置中导出备份。
 
-## 发布下一版
+## 反馈
 
-同时更新 `version.json` 的网页版本、安卓 versionCode（必须递增）、versionName、releaseTag 和两个下载地址；`update.js` 的 CURRENT_VERSION；`android-runtime.js` 的版本；HTML 标题。校验脚本会检查版本一致性。
+可到 **Qas 的抖音作品评论区留言，或直接私信反馈**。抖音号：**`idontknowqas`**。
 
-## 数据与权限
-
-聊天与媒体使用 WebView 的 localStorage / IndexedDB，保持稳定本地 HTTPS 来源 `https://appassets.androidplatform.net`。浏览器数据不会自动出现在应用内，请通过备份导入。更新同一签名包会保留数据。应用未上传本机数据到 GitHub。
-
-文件选择使用系统选择器；导出使用系统保存对话框；不索取全部存储权限。麦克风只在本地主页面发起录音时请求。原生消息接口限本地来源与主框架，插件 iframe 无权调用。网页弹窗仍由 QasDM 管理。
-
-`test-signing.p12` 是公开测试签名（密码 qasdm-test），使测试更新可以覆盖安装。不得将此密钥用于正式发布。测试包可被调试，正式版应更换应用 ID、正式密钥和构建类型。
-
-尚未做真机测试。WebView 的后台暂停可能影响主动消息；离线可读取已保存内容，模型 API、在线渲染资源和检查更新需要联网。
-
+反馈时请尽量附上版本号、APK／HTML、设备与浏览器、出现问题的操作步骤，以及截图或录屏。无需发送 API 密钥；诊断可使用应用内的脱敏导出。
 
 ## 使用许可
 
-QasDM 可免费使用，也可为个人使用而修改。可免费分享未修改的官方发布文件；禁止销售、收费分发或分发修改版。保留原作者 Qas 的署名、许可和官方赞赏码。完整条件见 [LICENSE](LICENSE)，第三方组件遵循各自许可。应用设置的「使用许可」可查看说明。
+可免费使用、自用二改，以及免费分享官方未修改的文件；禁止转卖、收费分发或分发二改版。请保留作者 Qas 的署名、使用许可与官方赞赏码。
+
+源码已公开，具体使用和分发条件见 [LICENSE](LICENSE)。第三方组件遵循各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+<details>
+<summary>构建与版本维护</summary>
+
+内部迭代记录保留 **v60**，对外发布采用 **v0.9.0**。`version.json` 的 `publicVersion` 是对外版本；`version` 保留旧 HTML 能识别的递增编号，避免 v60 把 0.9.0 误判为旧版本。安卓使用递增的 `versionCode` 判断更新。
+
+`index.html` 是唯一页面源，构建时复制到 APK；下载 HTML 会内嵌 `update.js` 与 `android-runtime.js`。发布下一版时同步维护版本配置、运行时版本、HTML 标题、发布标签及下载地址，校验脚本会检查一致性。
+
+GitHub Actions 自动运行版本检查、浏览器回归、APK 构建、lint、安卓原生测试、签名与内置页面校验，生成 APK、HTML 与 SHA256SUMS。本地构建需要 JDK 17、Gradle 8.9、Android SDK；使用 AGP 8.7.3、compileSdk 35、targetSdk 34。
+
+```sh
+node scripts/test-update.cjs
+node scripts/test-audit.cjs
+gradle :app:assembleDebug :app:lintDebug
+```
+
+目前采用公开测试签名与测试构建，用于保持测试版覆盖安装。原生接口限应用本地主页面，插件 iframe 无权调用；文件选择与导出使用系统选择器。
+
+</details>

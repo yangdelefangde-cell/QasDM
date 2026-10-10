@@ -10,7 +10,7 @@ android {
         versionCode releaseInfo.android.versionCode as int
         versionName releaseInfo.android.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        buildConfigField 'String', 'WEB_VERSION', '"' + releaseInfo.version + '"'
+        buildConfigField 'String', 'WEB_VERSION', '"' + (releaseInfo.publicVersion ?: releaseInfo.version) + '"'
     }
     buildFeatures { buildConfig true }
     signingConfigs {

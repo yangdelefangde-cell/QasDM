@@ -1,3 +1,15 @@
+# Public v0.9.0 release preparation
+
+Authorization: after reviewing the version and README checklist, the user selected GitHub and wrote “你可以改了”. Scope: public v0.9.0 naming, a factual feature-summary README, repository summary, author Qas / Douyin idontknowqas, and feedback via Douyin comments or private messages. Internal development iteration remains v60.
+
+- Public title, runtime and Android versionName: 0.9.0; Android versionCode: 600002, same package and signing certificate.
+- version.json publicVersion records 0.9.0. Its legacy version remains a monotonic 60-1 so already-shipped v60 HTML files can still discover the update. New clients compare public semantic versions, with a legacy fallback for old cached manifests.
+- Frozen v60 updater fixture verifies the original HTML upgrade path, alongside semantic-version and Android upgrade checks.
+- README summarizes implemented features, downloads, setup, test status, author / feedback and usage license. Simulated and unavailable features are identified explicitly.
+- Release tag and both official download filenames use v0.9.0. GitHub Actions validates and publishes a prerelease.
+
+Validation: public / legacy updater migration checks, source/state audit and the full phone/tablet browser regression passed. Android assembleDebug and lintDebug passed with zero lint errors. The built APK reports 600002 / 0.9.0, retains the prior signing certificate and includes byte-identical page/runtime sources. Standalone HTML displays v0.9.0 and embeds both runtime scripts. Main-branch CI will verify the same commit and publish the public prerelease.
+
 # v60 continuation and feedback
 
 Authorization: user approved continuing the unfinished v60 work and the new SMS/popup feedback with “你可以接着上个窗口的工作以及这一轮的反馈继续改了”, then “你继续吧”. Recovered the uncommitted v60 source from the previous workspace. HTML and APK continue to use one source.

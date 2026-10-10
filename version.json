@@ -1,13 +1,15 @@
 {
-  "version": "60",
-  "channel": "test",
-  "notes": "v60：修复短信收消息闪烁与弹窗位移，完善主页背景、深色模式、授权预览、文字特效、设置间距和三种界面语言。",
-  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-60/QasDM_v60.html",
+  "version": "60-1",
+  "publicVersion": "0.9.0",
+  "developmentVersion": "60",
+  "channel": "public-test",
+  "notes": "v0.9.0 公开测试版：基于内部 v60，包含角色私信、模拟短信、群聊、日记与记忆、音乐房间、媒体分享和互动效果。仍有不稳定和 bug，可到 Qas 的抖音作品评论区或私信反馈（抖音号 idontknowqas）。",
+  "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/v0.9.0/QasDM_v0.9.0.html",
   "android": {
-    "versionCode": 600001,
-    "versionName": "60.0-test.1",
+    "versionCode": 600002,
+    "versionName": "0.9.0",
     "minSdk": 26,
-    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/android-test-60/QasDM-60.0-test.1.apk"
+    "downloadUrl": "https://github.com/yangdelefangde-cell/QasDM/releases/download/v0.9.0/QasDM-0.9.0.apk"
   },
-  "releaseTag": "android-test-60"
+  "releaseTag": "v0.9.0"
 }

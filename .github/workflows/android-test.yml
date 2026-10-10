@@ -1,7 +1,7 @@
 name: Build Android test APK
 on:
   push:
-    branches: [main, 'codex/v59-batch', 'codex/v60-runtime']
+    branches: [main, 'codex/v59-batch', 'codex/v60-runtime', 'codex/public-0.9.0']
     paths: ['app/**', '*.gradle', 'gradle.properties', 'index.html', 'update.js', 'android-runtime.js', 'version.json', 'test-signing.p12', 'scripts/**', '.github/workflows/android-test.yml']
   workflow_dispatch:
 permissions:
@@ -73,7 +73,7 @@ jobs:
       - name: Prepare downloads
         run: |
           mkdir dist
-          node -e "const v=require('./version.json');require('fs').copyFileSync('app/build/outputs/apk/debug/app-debug.apk','dist/QasDM-'+v.android.versionName+'.apk');require('fs').copyFileSync('index.html','dist/QasDM_v'+v.version+'.html')"
+          node -e "const v=require('./version.json');require('fs').copyFileSync('app/build/outputs/apk/debug/app-debug.apk','dist/QasDM-'+v.android.versionName+'.apk');require('fs').copyFileSync('index.html','dist/QasDM_v'+(v.publicVersion||v.version)+'.html')"
           # Standalone HTML must include its scripts so downloaded HTML also works.
           python3 scripts/standalone.py
           (cd dist && sha256sum *.apk *.html > SHA256SUMS.txt)
@@ -89,11 +89,11 @@ jobs:
           TAG=$(node -p "require('./version.json').releaseTag")
           NAME=$(node -p "require('./version.json').android.versionName")
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM $NAME 安卓测试版" --notes-file RELEASE_NOTES.md
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM v$NAME 公开测试版" --notes-file RELEASE_NOTES.md
           else
             # This test release allows corrected builds; keep its source tag and assets together.
             gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$TAG" -f sha="$GITHUB_SHA" -F force=true
-            gh release edit "$TAG" --target "$GITHUB_SHA" --notes-file RELEASE_NOTES.md
+            gh release edit "$TAG" --target "$GITHUB_SHA" --prerelease --title "QasDM v$NAME 公开测试版" --notes-file RELEASE_NOTES.md
           fi
           gh release upload "$TAG" dist/* --clobber
 
