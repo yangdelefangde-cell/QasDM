@@ -1,0 +1,37 @@
+name: Prepare browser review runtime
+on:
+  push:
+    branches: [codex/v60-runtime]
+    paths: [.github/workflows/browser-review.yml]
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.58.2
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: |
+          tar -czf runtime.tar.gz -C "$HOME/.cache/ms-playwright" chromium_headless_shell-1208
+          split -b 30M -d runtime.tar.gz runtime.part
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-runtime-00
+          path: runtime.part00
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-runtime-01
+          path: runtime.part01
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-runtime-02
+          path: runtime.part02
+      - uses: actions/upload-artifact@v4
+        with:
+          name: browser-runtime-03
+          path: runtime.part03
+          if-no-files-found: ignore
